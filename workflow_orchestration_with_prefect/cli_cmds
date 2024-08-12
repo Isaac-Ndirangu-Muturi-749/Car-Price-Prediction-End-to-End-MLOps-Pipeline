@@ -1,0 +1,6 @@
+prefect deploy 3.4/model_training_flow.py:model_training_flow -n car_price_deployment -p mlops_zoomcamp_capstone_pool
+
+prefect worker start --pool 'mlops_zoomcamp_capstone_pool'
+
+prefect deployment run 'main-flow/taxi1'
+
