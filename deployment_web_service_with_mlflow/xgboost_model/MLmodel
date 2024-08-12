@@ -1,0 +1,35 @@
+artifact_path: xgboost_model
+flavors:
+  python_function:
+    data: model.xgb
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.10.14
+  xgboost:
+    code: null
+    data: model.xgb
+    model_class: xgboost.sklearn.XGBRegressor
+    model_format: xgb
+    xgb_version: 1.7.5
+mlflow_version: 2.3.1
+model_uuid: 5e76385d06af4a21afc2e9fd68d546a7
+run_id: 9c4533e2d8c049fdae991d4ba055ff38
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  type: dataframe
+signature:
+  inputs: '[{"name": "year", "type": "double"}, {"name": "mileage", "type": "double"},
+    {"name": "enginesize", "type": "double"}, {"name": "tax", "type": "double"}, {"name":
+    "mpg", "type": "double"}, {"name": "make_bmw", "type": "boolean"}, {"name": "make_cclass",
+    "type": "boolean"}, {"name": "make_focus", "type": "boolean"}, {"name": "make_ford",
+    "type": "boolean"}, {"name": "make_hyundi", "type": "boolean"}, {"name": "make_merc",
+    "type": "boolean"}, {"name": "make_skoda", "type": "boolean"}, {"name": "make_toyota",
+    "type": "boolean"}, {"name": "make_vauxhall", "type": "boolean"}, {"name": "make_vw",
+    "type": "boolean"}, {"name": "transmission_Manual", "type": "boolean"}, {"name":
+    "transmission_Semi-Auto", "type": "boolean"}, {"name": "fueltype_Hybrid", "type":
+    "boolean"}, {"name": "fueltype_Petrol", "type": "boolean"}]'
+  outputs: '[{"name": "price", "type": "double"}]'
+utc_time_created: '2024-08-12 16:26:08.205578'
