@@ -1,0 +1,121 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation Template for Car Price Prediction Project
+
+Parameters:
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t3.micro
+      - t3.small
+      - t3.medium
+    ConstraintDescription: Must be a valid EC2 instance type.
+
+  DBInstanceType:
+    Description: RDS instance type
+    Type: String
+    Default: db.t2.micro
+    AllowedValues:
+      - db.t2.micro
+      - db.t3.micro
+      - db.t3.small
+    ConstraintDescription: Must be a valid RDS instance type.
+
+  DBName:
+    Description: Database name
+    Type: String
+    Default: car_price_db
+    MinLength: 1
+    MaxLength: 64
+    AllowedPattern: '[a-zA-Z0-9]+'
+    ConstraintDescription: Must be alphanumeric.
+
+  DBUsername:
+    Description: Database master username
+    Type: String
+    MinLength: 1
+    MaxLength: 16
+    NoEcho: true
+
+  DBPassword:
+    Description: Database master password
+    Type: String
+    MinLength: 8
+    MaxLength: 41
+    NoEcho: true
+
+  S3BucketName:
+    Description: S3 bucket name for storing model artifacts
+    Type: String
+    Default: car-price-model-artifacts
+    MinLength: 3
+    MaxLength: 63
+    AllowedPattern: '[a-z0-9.-]*'
+    ConstraintDescription: Must be a valid S3 bucket name.
+
+Resources:
+  # EC2 Instance
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: ami-0abcdef1234567890 # Replace with your preferred AMI ID
+      KeyName: my-key-pair # Replace with your EC2 key pair name
+      Tags:
+        - Key: Name
+          Value: CarPricePredictionInstance
+
+  # RDS PostgreSQL Database
+  RDSInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceClass: !Ref DBInstanceType
+      AllocatedStorage: '20'
+      DBName: !Ref DBName
+      Engine: postgres
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      VPCSecurityGroups:
+        - !Ref DBSecurityGroup
+      PubliclyAccessible: true
+      BackupRetentionPeriod: 7
+      Tags:
+        - Key: Name
+          Value: CarPricePredictionDB
+
+  # Security Group for RDS
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow access to the RDS instance
+      VpcId: !Ref VPCId # Replace with your VPC ID
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '5432'
+          ToPort: '5432'
+          CidrIp: 0.0.0.0/0 # Restrict this for production
+
+  # S3 Bucket
+  ModelArtifactsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref S3BucketName
+      AccessControl: Private
+      Tags:
+        - Key: Name
+          Value: CarPricePredictionModelArtifacts
+
+Outputs:
+  EC2InstanceId:
+    Description: EC2 Instance ID
+    Value: !Ref EC2Instance
+
+  RDSInstanceEndpoint:
+    Description: RDS Endpoint
+    Value: !GetAtt RDSInstance.Endpoint.Address
+
+  S3BucketName:
+    Description: S3 Bucket Name
+    Value: !Ref ModelArtifactsBucket
