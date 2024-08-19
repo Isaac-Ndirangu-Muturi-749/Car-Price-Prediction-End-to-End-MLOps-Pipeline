@@ -1,6 +1,6 @@
 # Car Price Prediction: End-to-End MLOps Pipeline
 
-![](images/mlops.png.png)
+![](images/mlops.png)
 
 ## Project Overview
 
