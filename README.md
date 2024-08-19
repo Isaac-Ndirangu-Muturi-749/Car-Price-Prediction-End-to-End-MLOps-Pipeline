@@ -258,9 +258,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Feel free to connect with me:
+Follow me on Twitter 🐦, connect with me on LinkedIn 🔗, and check out my GitHub 🐙. You won't be disappointed!
 
-   - **🐦 Twitter**: [NdiranguMuturi1](https://x.com/NdiranguMuturi1)
-   - **💼 LinkedIn**: [Isaac Muturi](https://www.linkedin.com/in/isaac-muturi-3b6b2b237)
-   - **🔗 GitHub**: [Isaac Ndirangu](https://github.com/Isaac-Ndirangu-Muturi-749)
+   🐦 Twitter: https://x.com/NdiranguMuturi1
+   💼 LinkedIn: https://www.linkedin.com/in/isaac-muturi-3b6b2b237
+   🔗 GitHub: https://github.com/Isaac-Ndirangu-Muturi-749
+   📧 Email: ndirangumuturi749@gmail.com
 ---
