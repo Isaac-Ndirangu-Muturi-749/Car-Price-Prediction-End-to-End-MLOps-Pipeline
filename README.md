@@ -1,109 +1,97 @@
+
 # Car Price Prediction: End-to-End MLOps Pipeline
 
-![](images/mlops.png)
+![MLOps Pipeline](images/mlops.png)
 
 ## Project Overview
 
-This project implements an end-to-end MLOps pipeline for predicting car prices using machine learning. The pipeline covers data preprocessing, model training, model deployment, experiment tracking, model registry, workflow orchestration, and monitoring. The project utilizes various tools and technologies to ensure reproducibility, scalability, and efficient model management.
+This project implements an end-to-end MLOps pipeline for predicting car prices. It covers the entire workflow, from data preprocessing to model deployment and monitoring. The tools and technologies used ensure reproducibility, scalability, and efficient model management.
+
+## Problem Statement
+
+In today's dynamic automotive market, pricing used cars accurately is a complex challenge. Car prices vary significantly based on multiple factors such as brand, model, mileage, condition, and market demand. For both dealerships and individual sellers, incorrect pricing can result in lost revenue, longer sales cycles, or undervalued transactions. This project addresses these challenges by building an end-to-end machine learning pipeline for car price prediction. By leveraging data-driven insights and automating workflows, the pipeline ensures that predictions are accurate, scalable, and seamlessly integrated with deployment, monitoring, and continuous improvement processes.
 
 ## Project Structure
 
-The project is organized into the following main directories:
-
-- **`data/`**: Contains raw and processed data files.
-- **`data_preparation/`**: Includes scripts for data cleaning and preprocessing.
-- **`deployment_web_service_with_mlflow/`**: Contains the code for deploying the ML model using Flask and MLflow.
-- **`infrastructure_as_code_with_cloud_formation/`**: Provides CloudFormation templates for provisioning infrastructure on AWS.
-- **`integration-test/`**: Holds Docker-related files and scripts for integration testing.
-- **`modelling/`**: Includes notebooks and scripts for model training and experimentation with MLflow.
-- **`monitoring_with_evidently_and_grafana/`**: Contains configuration files and scripts for monitoring model performance using Evidently and Grafana.
-- **`unit_tests/`**: Includes unit tests for various components of the project.
-- **`workflow_orchestration_with_prefect/`**: Contains Prefect workflows for orchestrating the data pipeline.
+- **`data/`**: Raw and processed data files.
+- **`data_preparation/`**: Scripts for data cleaning and preprocessing.
+- **`deployment_web_service_with_mlflow/`**: Code for deploying the model using Flask and MLflow.
+- **`infrastructure_as_code_with_cloud_formation/`**: AWS CloudFormation templates for infrastructure.
+- **`integration-test/`**: Docker files and integration testing scripts.
+- **`modelling/`**: Notebooks and scripts for model training and experiment tracking (MLflow).
+- **`monitoring_with_evidently_and_grafana/`**: Scripts for monitoring using Evidently and Grafana.
+- **`unit_tests/`**: Unit tests for various components.
+- **`workflow_orchestration_with_prefect/`**: Prefect workflows for orchestration.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Python 3.10 or higher
-- Docker and Docker Compose
-- AWS CLI (for deploying infrastructure)
-- `pipenv` (for managing Python dependencies)
-- `pre-commit` (for managing code formatting and linting hooks)
+- **Python 3.10+**
+- **Docker/Docker Compose**
+- **AWS CLI**
+- **Conda (for environment management)**
+- **Pre-commit (for code formatting and linting)**
 
-### Setup
+### Setup Instructions
 
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-repo-url.git
-   cd your-repo-name
+   git clone https://github.com/Isaac-Ndirangu-Muturi-749/Car-Price-Prediction-End-to-End-MLOps-Pipeline.git
+   cd Car-Price-Prediction-End-to-End-MLOps-Pipeline
    ```
 
 2. **Install Dependencies**
 
-   Install Python dependencies:
-
    ```bash
-   pipenv install
-   ```
-
-   Install pre-commit hooks:
-
-   ```bash
+   conda env create -n car_price_prediction_env -f conda.yaml
+   conda activate car_price_prediction_env
    pre-commit install
    ```
 
 3. **Setup Infrastructure**
 
-   Navigate to the `infrastructure_as_code_with_cloud_formation` directory and deploy the infrastructure:
+CloudFormation is used to automate and manage AWS infrastructure for the Car Price Prediction project. With CloudFormation, you define resources such as EC2 instances, S3 buckets, RDS databases, and networking configurations in a JSON or YAML template. This allows you to create, update, and manage your infrastructure as code, ensuring consistency, repeatability, and scalability.
+
+In this project, CloudFormation is used to deploy the following infrastructure:
+
+- **RDS Database**: To store and retrieve car data for model training and predictions.
+- **S3 Buckets**: For storing datasets and model artifacts.
+- **EC2 Instances**: For running scripts, model training, and hosting the web service.
+
+By using CloudFormation, the infrastructure setup process is streamlined, and the environment can be easily replicated across different stages (e.g., development, testing, production).
+
+Deploy AWS infrastructure using CloudFormation:
 
    ```bash
    aws cloudformation create-stack --stack-name car-price-prediction-stack --template-body file://cloud_formation_template.yaml --parameters ParameterKey=DBUsername,ParameterValue=your-db-username ParameterKey=DBPassword,ParameterValue=your-db-password
    ```
 
-   Replace `your-db-username` and `your-db-password` with your desired credentials.
-
 4. **Build and Run Docker Containers**
-
-   To build and run the Docker containers for the integration tests:
 
    ```bash
    make integration_test
    ```
 
-5. **Run Unit Tests**
-
-   To run unit tests:
+5. **Run Tests and Quality Checks**
 
    ```bash
-   make test
+   make test           # Run unit tests
+   make quality_checks  # Run isort, black, pylint
    ```
 
-6. **Run Quality Checks**
-
-   To run quality checks (isort, black, pylint):
-
-   ```bash
-   make quality_checks
-   ```
-
-7. **Deploy Model**
-
-   To deploy the model using Flask and MLflow:
+6. **Deploy Model**
 
    ```bash
    make build
    ```
 
-   This will build the Docker image and run the integration tests. You can then deploy the model service using the appropriate scripts in `deployment_web_service_with_mlflow/`.
-
 ## Usage
 
 ### Data Preparation
 
-Data preprocessing is done in the `data_preparation/` directory. The `data_preprocessing_and_cleaning.py` script handles cleaning and preprocessing of raw car data.
-
-Example usage:
+Run the data cleaning and preprocessing script:
 
 ```bash
 python data_preparation/data_preprocessing_and_cleaning.py
@@ -111,7 +99,7 @@ python data_preparation/data_preprocessing_and_cleaning.py
 
 ### Model Training
 
-Model training scripts are located in `modelling/`. The `xgboost_optimized_model.py` script performs hyperparameter tuning and trains the XGBoost model.
+Model training scripts are located in the `modelling/` directory. The `xgboost_optimized_model.py` script performs hyperparameter tuning and trains the XGBoost model.
 
 Example usage:
 
@@ -121,19 +109,58 @@ python modelling/experiment_tracking_with_mlflow/xgboost_optimized_model.py
 
 ### Experiment Tracking and Model Registry
 
-Model experiments and training results are tracked using MLflow. Check the `modelling/experiment_tracking_with_mlflow/` directory for notebooks and scripts used for tracking and registry.
+Model experiments and training results are tracked using MLflow. Check the `modelling/experiment_tracking_with_mlflow/` directory for notebooks and scripts related to experiment tracking and the model registry.
 
-### Deployment
+### Workflow Orchestration with Prefect
 
-To deploy the model as a web service:
+#### Step 1: Install Dependencies
 
-1. Build the Docker image:
+```bash
+pip install -r workflow_orchestration_with_prefect/requirements.txt
+```
+
+#### Step 2: Start Prefect Server
+
+```bash
+prefect server start
+prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api
+```
+
+#### Step 3: Run Workflow
+
+```bash
+python workflow_orchestration_with_prefect/workflow_orchestration.py
+```
+
+#### Step 4: Initialize and Deploy Prefect Flows
+
+```bash
+prefect project init
+prefect deploy workflow_orchestration_with_prefect/workflow_orchestration.py:main_flow -n car-prediction-training -p zoompool
+```
+
+Start a worker and trigger flow execution:
+
+```bash
+prefect worker start --pool 'zoompool'
+prefect deployment run 'main-flow/car-prediction-training'
+```
+
+#### Step 5: Schedule the Workflow
+
+```bash
+prefect deployment set-schedule main_flow/car-prediction-training --interval 120
+```
+
+### Model Deployment
+
+1. **Build the Docker image:**
 
    ```bash
    docker build -t car-price-prediction-web-service deployment_web_service_with_mlflow/
    ```
 
-2. Run the Docker container:
+2. **Run the container:**
 
    ```bash
    docker run -d -p 5000:5000 --name car_price_predictor car-price-prediction-web-service
@@ -141,47 +168,89 @@ To deploy the model as a web service:
 
 ### Monitoring
 
-Model performance is monitored using Evidently and Grafana. Configuration files are located in `monitoring_with_evidently_and_grafana/`.
-
-![](images/monitoring_scheme.png)
-
-To start monitoring:
-
-1. Build and run the Docker containers:
-
-   ```bash
-   docker-compose -f docker-compose.yml up
-   ```
-
-2. Access Grafana at `http://localhost:3000` and configure dashboards as needed.
-
-### Workflow Orchestration
-
-Workflows are orchestrated using Prefect. The Prefect configurations and workflows are in `workflow_orchestration_with_prefect/`.
-
-To run workflows:
+Start monitoring with Evidently and Grafana:
 
 ```bash
-python workflow_orchestration_with_prefect/workflow_orchestration.py
+docker-compose -f monitoring_with_evidently_and_grafana/docker-compose.yml up
 ```
+
+Access Grafana at `http://localhost:3000`.
+
+![Monitoring Scheme](images/monitoring_scheme.png)
 
 ## Best Practices
 
-- **Unit Tests**: Implemented in `unit_tests/` to ensure code reliability.
-- **Integration Tests**: Implemented and run as part of the Docker-based testing.
-- **Code Quality**: Managed using `isort`, `black`, and `pylint`.
-- **Makefile**: Included for automation of build, test, and deployment processes.
-- **Pre-commit Hooks**: Ensures code quality and formatting.
-- **CI/CD Pipeline**: Managed via Makefile and integration test scripts.
+- **Unit Tests**: Located in `unit_tests/`
+- **Integration Tests**: Run via Docker
+- **Code Quality**: Managed using isort, black, and pylint
+- **Automation**: Controlled via Makefile and pre-commit hooks
+- **CI/CD Pipeline**: Integrated through the Makefile and test scripts
 
-## Contributing
+### Unit Tests
 
-If you would like to contribute to this project, please follow the steps below:
+- **Location**: `unit_tests/`
 
-1. Fork the repository.
-2. Create a new branch for your changes.
-3. Make the changes and test them thoroughly.
-4. Submit a pull request with a detailed description of your changes.
+  Unit tests validate individual components of the project in isolation. These tests ensure that functions, classes, or methods behave as expected.
+
+  - **Technologies Used**:
+    - `unittest` or `pytest`
+    - Mocking libraries like `unittest.mock`
+
+  - **How to Run**:
+
+    ```bash
+    make test
+    ```
+
+### Integration Tests
+
+- **Location**: `integration-test/`
+
+  Integration tests verify that different components work together, such as testing the API endpoint and model service.
+
+  - **How to Run**:
+
+    ```bash
+    make integration_test
+    ```
+
+### Code Quality
+
+- **Tools**: `isort`, `black`, `pylint`
+
+  Code quality tools enforce consistent formatting and catch errors early. Pre-commit hooks ensure these checks run before every commit.
+
+  - **How to Run**:
+
+    ```bash
+    make quality_checks
+    ```
+
+### Automation
+
+- **Makefile**: Automates tasks like testing, building, and deploying.
+
+  Example commands:
+
+  ```bash
+  make build          # Build Docker image
+  make test           # Run unit tests
+  make quality_checks # Run code quality tools
+  ```
+
+- **Pre-commit Hooks**: Automatically run checks before every commit.
+
+    Set up hooks:
+
+    ```bash
+    pre-commit install
+    ```
+
+### CI/CD Pipeline
+
+- **CI/CD Integration**: Automates testing, building, and deployment using services like GitHub Actions.
+
+---
 
 ## License
 
@@ -189,12 +258,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Follow me on Twitter 🐦, connect with me on LinkedIn 🔗, and check out my GitHub 🐙. You won't be disappointed!
+Feel free to connect with me:
 
-🐦 Twitter: https://x.com/NdiranguMuturi1
-
-💼 LinkedIn: https://www.linkedin.com/in/isaac-muturi-3b6b2b237
-
-🔗 GitHub: https://github.com/Isaac-Ndirangu-Muturi-749
-
-📧 Email: ndirangumuturi749@gmail.com
+   - **🐦 Twitter**: [NdiranguMuturi1](https://x.com/NdiranguMuturi1)
+   - **💼 LinkedIn**: [Isaac Muturi](https://www.linkedin.com/in/isaac-muturi-3b6b2b237)
+   - **🔗 GitHub**: [Isaac Ndirangu](https://github.com/Isaac-Ndirangu-Muturi-749)
+---
