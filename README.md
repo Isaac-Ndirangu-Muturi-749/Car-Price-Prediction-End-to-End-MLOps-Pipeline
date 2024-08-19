@@ -1,8 +1,6 @@
-Here’s a comprehensive `README.md` for your Car Price Prediction project. It covers project description, setup, usage examples, and explanations of the different components.
-
----
-
 # Car Price Prediction: End-to-End MLOps Pipeline
+
+![](images/mlops.png.png)
 
 ## Project Overview
 
@@ -144,6 +142,8 @@ To deploy the model as a web service:
 ### Monitoring
 
 Model performance is monitored using Evidently and Grafana. Configuration files are located in `monitoring_with_evidently_and_grafana/`.
+
+![](images/monitoring_scheme.png)
 
 To start monitoring:
 
